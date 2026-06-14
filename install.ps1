@@ -15,7 +15,18 @@ $tmp = Join-Path $env:TEMP "tarkhan-cli-$ver.tar.gz"
 Write-Host "> downloading $($meta.asset)"
 Invoke-WebRequest -Uri $meta.asset -OutFile $tmp
 Write-Host "> extracting to $dest"
-tar -xzf $tmp -C $dest
+# Extract with only a relative archive name (cwd = $dest) so no drive-letter
+# path is ever passed to tar — works with both native bsdtar and GNU tar.
+$localPkg = Join-Path $dest '_pkg.tar.gz'
+Copy-Item $tmp $localPkg -Force
+Push-Location $dest
+try {
+  tar -xzf '_pkg.tar.gz'
+  if ($LASTEXITCODE -ne 0) { throw "tar extract failed (exit $LASTEXITCODE)" }
+} finally {
+  Pop-Location
+  Remove-Item $localPkg -Force -ErrorAction SilentlyContinue
+}
 Remove-Item $tmp -Force
 
 # Repoint current (plain text pointer, read by the launcher each run)
