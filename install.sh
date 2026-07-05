@@ -22,6 +22,9 @@ curl -fsSL "$asset" -o "$tmp"
 echo "> extracting to $dest"
 tar -xzf "$tmp" -C "$dest"
 
+echo "> installing runtime dependencies"
+( cd "$dest" && npm install --omit=dev --no-audit --no-fund --loglevel=error )
+
 # Repoint current
 echo -n "$ver" > "$app_dir/current"
 

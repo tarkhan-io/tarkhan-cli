@@ -29,6 +29,15 @@ try {
 }
 Remove-Item $tmp -Force
 
+Write-Host "> installing runtime dependencies"
+Push-Location $dest
+try {
+  npm install --omit=dev --no-audit --no-fund --loglevel=error
+  if ($LASTEXITCODE -ne 0) { throw "npm install failed (exit $LASTEXITCODE)" }
+} finally {
+  Pop-Location
+}
+
 # Repoint current (plain text pointer, read by the launcher each run)
 Set-Content -Path (Join-Path $appDir 'current') -Value $ver -NoNewline
 
