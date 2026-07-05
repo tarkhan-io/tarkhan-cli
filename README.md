@@ -2,22 +2,32 @@
 
 The Tarkhan Enterprise Agentic AI Platform command-line client.
 
-## Install (Windows / PowerShell)
+## Install
+
+Requires Node.js >= 20.
+
+### macOS / Linux
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/tarkhan-io/tarkhan-cli/main/install.sh | bash
+```
+
+### Windows (PowerShell)
 
 ```powershell
 iwr https://raw.githubusercontent.com/tarkhan-io/tarkhan-cli/main/install.ps1 | iex
 ```
 
-Requires Node.js >= 20. After install:
+After install:
 
-```powershell
+```bash
 tarkhan --version
 tarkhan login --api https://your-tarkhan-server
 ```
 
 ## Update
 
-```powershell
+```bash
 tarkhan update
 ```
 
